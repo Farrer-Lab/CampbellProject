@@ -39,32 +39,40 @@ RainNova.Natives<-aov(PercentNatives~Rain, data=farrer)
 summary(RainNova.Natives) #rain is not significant on percent natives
 RainNova.Invasives<-aov(PercentInvasives~Rain, data=farrer)
 summary((RainNova.Invasives)) #rain is significant on percent invasives
+aggregate(farrer$PercentInvasives,list(farrer$Rain),FUN=mean) #find the mean
 RainNova.Weeds<-aov(PercentWeeds~Rain, data=farrer)
 summary(RainNova.Weeds) #rain is significant on percent weeds
+aggregate(farrer$PercentWeeds,list(farrer$Rain),FUN=mean) #find the mean
 LitterNova.Natives<-aov(PercentNatives~litter, data=farrer)
 summary(LitterNova.Natives) #litter is significant on percent natives
 TukeyHSD(LitterNova.Natives)#all three comparisons are significant
 plot(TukeyHSD(LitterNova.Natives, conf.level = .95),las=2) #medium litter average natives > high litter, no litter average natives > high litter, no litter average natives > medium litter
+aggregate(farrer$PercentNatives,list(farrer$litter),FUN=mean) #find the mean
 LitterNova.Invasives<-aov(PercentInvasives~litter, data=farrer)
 summary(LitterNova.Invasives)#litter is significant on percent invasives
 TukeyHSD(LitterNova.Invasives)#all three comparisons are significant
 plot(TukeyHSD(LitterNova.Invasives, conf.level = .95),las=2) #high litter average invasives > medium litter average invasives > no litter average invasives
+aggregate(farrer$PercentInvasives,list(farrer$litter),FUN=mean) #find the mean
 LitterNova.Weeds<-aov(PercentWeeds~litter, data=farrer)
 summary(LitterNova.Weeds) #litter is significant on percent weeds
 TukeyHSD(LitterNova.Weeds) #there is only a significant difference between none and high litter
 plot(TukeyHSD(LitterNova.Weeds, conf.level = .95),las=2)#medium litter average weeds > hgih litter average weeds, no litter average weeds > high litter, no litter average weeds > medium litter
+aggregate(farrer$PercentWeeds,list(farrer$litter),FUN=mean) #find the mean
 SoilNova.Natives<-aov(PercentNatives~P1, data=farrer)
 summary(SoilNova.Natives) #soil type is significant on percent natives
 TukeyHSD(SoilNova.Natives)#Difference between MH and AV, MH_L and AV, MH and MH_L is different for soil compared to AV and C, AV is similar to control
 plot(TukeyHSD(SoilNova.Natives, conf.level = .95),las=2) #mostly positive differences in means, see plot for specifics
+aggregate(farrer$PercentNatives,list(farrer$P1),FUN=mean) #find the mean
 SoilNova.Invasives<-aov(PercentInvasives~P1, data=farrer)
 summary(SoilNova.Invasives)#soil type is significant on percent invasives
 TukeyHSD(SoilNova.Invasives) #soil type is not hugely important for Invasive, soil type is significant on percent weeds, MH_L was significantly different from all that are not MH
 plot(TukeyHSD(SoilNova.Invasives, conf.level = .95),las=2)#mostly negative differences in means, except one, see plot for specifics
+aggregate(farrer$PercentInvasives,list(farrer$P1),FUN=mean) #find the mean
 SoilNova.Weeds<-aov(PercentWeeds~P1, data=farrer)
 summary(SoilNova.Weeds) #soil type is significant on percent weeds
 TukeyHSD(SoilNova.Weeds) #only significant difference is MH_L vs. AV
 plot(TukeyHSD(SoilNova.Weeds, conf.level = .95),las=2) #mix between negative and positive, but mostly positive, see plot for specifics
+aggregate(farrer$PercentWeeds,list(farrer$P1),FUN=mean) #find the mean
 NativeNova<-aov(PercentNatives~litter*P1*Rain, data=farrer)
 summary(NativeNova) #litter, soil, interaction between litter*soil, and interaction between litter*soil*rain are important
 TukeyHSD(NativeNova)
@@ -85,8 +93,12 @@ summary(SeedNova.Weeds) #seed is not significant on weeds
 library(ggplot2) #enable ggplot add-on
 ggplot(data=farrer, aes(x=P1,y=PercentNatives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw() #make a bar graph with x being soil treatment and y being percent natives
 ggplot(data=farrer, aes(x=litter, y=PercentNatives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
-ggplot(data=farrer, aes(x=Rain, y=PercentWeeds))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
-ggplot(data=farrer, aes(x=P1, y=PercentNatives, fill=litter))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw() #make a bar graph with x being soil treatment and y being percent natives and include differentiation based on litter
-ggplot(data=farrer, aes(x=Rain, y=PercentInvasives))+geom_bar(stat="summary", position= "dodge", fun="mean")+theme_bw()
 ggplot(data=farrer, aes(x=P1, y=PercentInvasives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
-
+NativesLitterandSoil.plot<-ggplot(data=farrer, aes(x=P1, y=PercentNatives, fill=litter))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw() #make a bar graph with x being soil treatment and y being percent natives and include differentiation based on litter
+InvasivesLitterandSoil.plot<-ggplot(data=farrer, aes(x=P1, y=PercentInvasives, fill=litter))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()+ theme(legend.position="none")
+WeedsLitterandSoil.plot<-ggplot(data=farrer, aes(x=P1, y=PercentWeeds, fill=litter))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()+ theme(legend.position="none")
+WeedsLitterandSoil.plot+InvasivesLitterandSoil.plot+NativesLitterandSoil.plot
+RainWeeds.plot<-ggplot(data=farrer, aes(x=Rain, y=PercentWeeds))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
+RainNatives.plot<-ggplot(data=farrer, aes(x=Rain, y=PercentNatives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
+RainInvasives.plot<-ggplot(data=farrer, aes(x=Rain, y=PercentInvasives))+geom_bar(stat="summary", position= "dodge", fun="mean")+theme_bw()
+RainWeeds.plot+RainInvasives.plot+RainNatives.plot
