@@ -85,8 +85,8 @@ summary(SeedNova.Weeds) #seed is not significant on weeds
 library(ggplot2) #enable ggplot add-on
 ggplot(data=farrer, aes(x=P1,y=PercentNatives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw() #make a bar graph with x being soil treatment and y being percent natives
 ggplot(data=farrer, aes(x=litter, y=PercentNatives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
-ggplot(data=farrer, aes(x=Rain, y=PercentInvasives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
 ggplot(data=farrer, aes(x=Rain, y=PercentWeeds))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
 ggplot(data=farrer, aes(x=P1, y=PercentNatives, fill=litter))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw() #make a bar graph with x being soil treatment and y being percent natives and include differentiation based on litter
 ggplot(data=farrer, aes(x=Rain, y=PercentInvasives))+geom_bar(stat="summary", position= "dodge", fun="mean")+theme_bw()
 ggplot(data=farrer, aes(x=P1, y=PercentInvasives))+geom_bar(stat="summary", position="dodge", fun="mean")+theme_bw()
+
